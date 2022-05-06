@@ -34,7 +34,7 @@ else
     define('DB_PASS', $cleardb_password); //Add your DB pass
     define('DB_NAME', $cleardb_db); //Add your DB Name
 
-    define('URLROOT', 'https://granny-crud.herokuapp.com');
+    define('URLROOT', 'https://the-epic-gamer.herokuapp.com/');
 }
 //Sitename
 define('SITENAME', 'Login & Register script');
