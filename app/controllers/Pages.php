@@ -7,6 +7,9 @@ class Pages extends Controller
 
     public function index()
     {
-        echo("hello cruel world!");
+        $data = [
+            "ip" => $_SERVER['REMOTE_ADDR']
+        ];
+        $this->view('landing/index', $data);
     }
 }
