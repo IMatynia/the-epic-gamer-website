@@ -6,5 +6,7 @@
 
     require_once 'config/config.php';
 
+    require_once 'views/includes/head.php';
+
     //Instantiate core class
     $init = new Core();

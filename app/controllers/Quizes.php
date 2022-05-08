@@ -1,11 +1,11 @@
 <?php
-class Pages extends Controller
+class Quizes extends Controller
 {
     public function __construct()
     {
     }
 
-    public function index()
+    public function index() /// List all quizes
     {
         $data = [
             "ip" => $_SERVER['REMOTE_ADDR']
