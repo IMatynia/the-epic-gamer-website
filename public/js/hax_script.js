@@ -1,4 +1,4 @@
-TYPE_SPEED = 20;
+TYPE_SPEED = 10;
 magic_static = "";
 
 function type_out_letters(what, where)
