@@ -3,7 +3,7 @@ class Articles
 {
     public function __construct()
     {
-        $this->filename = APPROOT . "\\database\\articles.json";
+        $this->filename = $_SERVER['DOCUMENT_ROOT'] . "/database/articles.json";
         $raw_database = file_get_contents($this->filename);
         $this->all_articles = json_decode($raw_database);
     }
