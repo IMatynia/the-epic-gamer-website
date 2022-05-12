@@ -5,7 +5,7 @@
    * URL FORMAT - /controller/method/params
    */
   class Core {
-    protected $currentController = 'News';
+    protected $currentController = 'news';
     protected $currentMethod = 'index';
     protected $params = [];
 
@@ -15,9 +15,9 @@
       $url = $this->getUrl();
       
       // Look in BLL for first value
-      if(isset($url[0]) && file_exists('../app/controllers/' . strtolower(ucwords($url[0])). '.php')){
+      if(isset($url[0]) && file_exists('../app/controllers/' . strtolower($url[0]). '.php')){
         // If exists, set as controller
-        $this->currentController =strtolower(ucwords($url[0]));
+        $this->currentController =strtolower($url[0]);
         // Unset 0 Index
         unset($url[0]);
       }
