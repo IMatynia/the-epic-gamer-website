@@ -1,0 +1,22 @@
+#hax {
+  font-family: "VT323", monospace;
+  color: green;
+  background-color: black;
+  height: 100%;
+  width: 100%;
+  font-size: xx-large;
+  overflow: hidden;
+
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  cursor: wait;
+}
+
+#hax span {
+    color: #DDD;
+    font-style: italic;
+}

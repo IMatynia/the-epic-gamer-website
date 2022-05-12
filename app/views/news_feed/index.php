@@ -1,6 +1,7 @@
 <?php require APPROOT . '/views/includes/nav.php'; ?>
 
 <div id="contents">
+    <div class="left_bar">LEFT BAR</div>
     <div class="article_container">
         <?php
             foreach ($data["articles"] as $identifier => $article) {
@@ -8,6 +9,6 @@
             }
         ?>
     </div>
+    <?php require APPROOT . '/views/includes/ads.php'; ?>
 </div>
-    
 <?php require APPROOT . '/views/includes/footer.php'; ?>
