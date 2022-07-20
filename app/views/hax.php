@@ -1,3 +1,5 @@
+<?php require_once APPROOT . '/views/includes/head.php'; ?>
+
 <div id="hax" >
     <?php
 

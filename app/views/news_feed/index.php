@@ -1,4 +1,5 @@
-<?php require APPROOT . '/views/includes/nav.php'; ?>
+<?php require_once APPROOT . '/views/includes/head.php'; ?>
+<?php require_once APPROOT . '/views/includes/nav.php'; ?>
 
 <div id="contents">
     <div class="left_bar">LEFT BAR</div>
