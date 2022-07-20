@@ -5,6 +5,7 @@
    * URL FORMAT - /controller/method/params
    */
   class Core {
+    /// Default site
     protected $currentController = 'news';
     protected $currentMethod = 'index';
     protected $params = [];
