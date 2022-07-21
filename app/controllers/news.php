@@ -26,7 +26,7 @@ class News extends Controller
             "articles" => $articles,
             "tag" => $tag
         ];
-        $this->view('news_feed/index', $data);
+        $this->view('news_feed/browse', $data);
     }
 
     public function show($id_string)
