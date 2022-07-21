@@ -20,4 +20,5 @@ require_once APPROOT . '/views/includes/nav.php';
     </div>
     <?php require APPROOT . '/views/includes/ads.php'; ?>
 </div>
+
 <?php require APPROOT . '/views/includes/footer.php'; ?>

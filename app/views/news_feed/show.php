@@ -19,3 +19,5 @@ $article = $data["article"];
     <h2> <?php echo $article->date_published . " | " . $article->author; ?> </h2>
     <p> <?php echo $article->contents; ?> </p>
 </div>
+
+<?php require APPROOT . '/views/includes/footer.php'; ?>
