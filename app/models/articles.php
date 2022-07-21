@@ -1,13 +1,14 @@
 <?php
 class Articles
 {
-    private $_all_articles;
+    private static $_all_articles = null;
 
     public function __construct()
     {
-        $raw_articles = file_get_contents(ARTICLES_DB_FILE);
-        $json = json_decode($raw_articles);
-        $this->_all_articles = $json;
+        if (Articles::$_all_articles == null) {
+            $raw_articles = file_get_contents(ARTICLES_DB_FILE);
+            Articles::$_all_articles = json_decode($raw_articles);
+        }
     }
 
     /**
@@ -17,8 +18,8 @@ class Articles
      */
     public function getArticleByIdentifier($identifier)
     {
-        if (property_exists($this->_all_articles, $identifier)) {
-            return $this->_all_articles->$identifier;
+        if (property_exists(Articles::$_all_articles, $identifier)) {
+            return Articles::$_all_articles->$identifier;
         }
         throw new Exception("Article " . $identifier . " not found!");
     }
@@ -31,7 +32,7 @@ class Articles
     public function getArticlesByTag($tag)
     {
         $out = [];
-        foreach ($this->_all_articles as $id => $art_data) {
+        foreach (Articles::$_all_articles as $id => $art_data) {
             if (in_array($tag, $art_data->tags)) {
                 $out[$id] = $art_data;
             }
@@ -41,6 +42,6 @@ class Articles
 
     public function getAllArticles()
     {
-        return $this->_all_articles;
+        return Articles::$_all_articles;
     }
 }
