@@ -6,6 +6,10 @@ require_once APPROOT . '/views/includes/nav.php';
 $article = $data["article"];
 ?>
 
+<head>
+    <link rel="stylesheet" href="<?php echo URLROOT ?>/public/css/article.css">
+</head>
+
 <div class="article">
     <div class="thumbnail">
         <img src="<?php echo $article->thumbnail_image; ?>" />
