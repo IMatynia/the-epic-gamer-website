@@ -1,17 +1,10 @@
-<?php require_once APPROOT . '/views/includes/head.php'; ?>
-<?php $article = $data["article"] ?>
-
 <?php
-// OGP header
-$ogp_data = [
-    "title" => $article->title,
-    "description" => $article->text_summary,
-    "type" => "article",
-    "image" => $article->thumbnail_image
-];
+require_once APPROOT . '/views/includes/head.php';
 require_once APPROOT . '/views/includes/ogp_header.php';
+require_once APPROOT . '/views/includes/nav.php';
+
+$article = $data["article"];
 ?>
-<?php require_once APPROOT . '/views/includes/nav.php'; ?>
 
 <div class="article">
     <div class="thumbnail">

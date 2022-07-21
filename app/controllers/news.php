@@ -24,7 +24,11 @@ class News extends Controller
         $data = [
             "title" => $title,
             "articles" => $articles,
-            "tag" => $tag
+            "tag" => $tag,
+            "ogp_data" => new OGPdata(
+                $title,
+                "Browse REAL news brought to you by epic gamer journalists like you. Epic gaming. Epic news."
+            )
         ];
         $this->view('news_feed/browse', $data);
     }
@@ -34,7 +38,13 @@ class News extends Controller
         $article = $this->article_model->getArticleByIdentifier($id_string);
         $data = [
             "title" => $article->title,
-            "article" => $article
+            "article" => $article,
+            "ogp_data" => new OGPdata(
+                $article->title,
+                $article->text_summary,
+                $article->thumbnail_image,
+                "article"
+            )
         ];
         $this->view('news_feed/show', $data);
     }

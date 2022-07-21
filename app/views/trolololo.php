@@ -1,11 +1,4 @@
 <?php
-// OGP header
-$ogp_data = [
-    "title" => "Is that you in this screenshot? - Check this out",
-    "description" => "Image posting website, video hosting and gaming related media",
-    "type" => "website",
-    "image" => ""
-];
 require_once APPROOT . '/views/includes/ogp_header.php';
 ?>
 
