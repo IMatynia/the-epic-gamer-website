@@ -9,7 +9,7 @@ $tags = $data["nav_tags"];
     <?php
     foreach ($tags as $tag => $description) {
         $link = URLROOT . "news/browse/" . $tag;
-        echo "<a class=\"tag_nav_el\" href=\"" . $link . "\">" . strtoupper($tag) . "</a>";
+        echo "<a class=\"cool_hover\" href=\"" . $link . "\"><div>" . strtoupper($tag) . "</div></a>";
     }
     ?>
 </div>
