@@ -2,6 +2,7 @@
 require_once APPROOT . '/views/includes/head.php';
 require_once APPROOT . '/views/includes/ogp_header.php';
 require_once APPROOT . '/views/includes/nav.php';
+require_once APPROOT . '/views/includes/tag_nav.php';
 ?>
 
 <head>

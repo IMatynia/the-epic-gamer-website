@@ -7,7 +7,7 @@ class Articles
     {
         if (Articles::$_all_articles == null) {
             $raw_articles = file_get_contents(ARTICLES_DB_FILE);
-            Articles::$_all_articles = json_decode($raw_articles);
+            Articles::$_all_articles = (array)json_decode($raw_articles);
         }
     }
 

@@ -4,6 +4,7 @@ class News extends Controller
     public function __construct()
     {
         $this->article_model = $this->model("Articles");
+        $this->tags_model = $this->model("Tags");
     }
 
     public function index($tag = null)
@@ -13,6 +14,7 @@ class News extends Controller
 
     public function browse($tag = null)
     {
+        // Filter by tag
         if ($tag != null) {
             $title = ucfirst($tag) . " - The Epic Gamer";
             $articles = $this->article_model->getArticlesByTag($tag);
@@ -21,6 +23,20 @@ class News extends Controller
             $articles = $this->article_model->getAllArticles();
         }
 
+        function chk_time($art_a, $art_b)
+        {
+            if ($art_a->date_published > $art_b->date_published) {
+                return 1;
+            } else if ($art_a->date_published == $art_b->date_published) {
+                return 0;
+            } else {
+                return -1;
+            }
+        }
+
+        //Sort by post time
+        usort($articles, "chk_time");
+
         $data = [
             "title" => $title,
             "articles" => $articles,
@@ -28,7 +44,8 @@ class News extends Controller
             "ogp_data" => new OGPdata(
                 $title,
                 "Browse REAL news brought to you by epic gamer journalists like you. Epic gaming. Epic news."
-            )
+            ),
+            "nav_tags" => $this->tags_model->getAllTags()
         ];
         $this->view('news_feed/browse', $data);
     }
