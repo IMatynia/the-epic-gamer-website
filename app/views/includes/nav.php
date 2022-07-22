@@ -1,6 +1,6 @@
 <nav class="top_nav">
     <div class="top_title">
-        <div>THE EPIC GAMER</div>
+        <a href="<?php echo URLROOT?>">THE EPIC GAMER</a></div>
     </div>
     <div class="link_bar">
         <a class="cool_hover" href="<?php echo URLROOT . "news"; ?>"><div>NEWS</div></a>
