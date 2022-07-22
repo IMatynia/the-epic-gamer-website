@@ -7,7 +7,7 @@ class Tags
     {
         if (Tags::$_all_tags == null) {
             $raw_tags = file_get_contents(TAGS_DB_FILE);
-            Tags::$_all_tags = json_decode($raw_tags);
+            Tags::$_all_tags = json_decode($raw_tags, true);
         }
     }
 

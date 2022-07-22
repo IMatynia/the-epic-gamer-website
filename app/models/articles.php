@@ -18,8 +18,8 @@ class Articles
      */
     public function getArticleByIdentifier($identifier)
     {
-        if (property_exists(Articles::$_all_articles, $identifier)) {
-            return Articles::$_all_articles->$identifier;
+        if (isset(Articles::$_all_articles, $identifier)) {
+            return Articles::$_all_articles[$identifier];
         }
         throw new Exception("Article " . $identifier . " not found!");
     }
