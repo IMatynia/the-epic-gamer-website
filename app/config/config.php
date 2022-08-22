@@ -8,7 +8,19 @@ if (APPROOT == "D:\\Programming\\the-epic-gamer-website\\app") {
     define('URLROOT', 'http://localhost/');
 } else {
     define('URLROOT', 'https://the-epic-gamer.herokuapp.com/');
+
+    $cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+    $cleardb_server = $cleardb_url["host"];
+    $cleardb_username = $cleardb_url["user"];
+    $cleardb_password = $cleardb_url["pass"];
+    $cleardb_db = substr($cleardb_url["path"], 1);
 }
+
+// Database params
+define('DB_HOST', $cleardb_server); //Add your db host
+define('DB_USER', $cleardb_username); // Add your DB root
+define('DB_PASS', $cleardb_password); //Add your DB pass
+define('DB_NAME', $cleardb_db); //Add your DB Name
 
 //Sitename
 define('SITENAME', 'The Epic Gamer');
