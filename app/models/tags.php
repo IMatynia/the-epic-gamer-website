@@ -24,7 +24,7 @@ class Tags
 
     public function getAllTags()
     {
-        $this->db->query("SELECT name, description FROM tags");
+        $this->db->query("SELECT name, description FROM tags ORDER BY name");
         $raw_results = $this->db->resultSet();
         $results = [];
         foreach ($raw_results as $key => $tag_description) {
