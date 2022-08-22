@@ -1,14 +1,25 @@
 <?php
 class Articles
 {
-    private static $_all_articles = null;
-
     public function __construct()
     {
-        if (Articles::$_all_articles == null) {
-            $raw_articles = file_get_contents(ARTICLES_DB_FILE);
-            Articles::$_all_articles = (array)json_decode($raw_articles);
+        $this->db = new Database;
+    }
+
+    public function getTagsByIdentifier($identifier)
+    {
+        $this->db->query("
+        SELECT name
+        FROM articles, article_tags, tags 
+        WHERE articles.id = article_tags.article_id AND tags.id = article_tags.tag_id AND articles.identifier = :identifier
+        ORDER BY name");
+        $this->db->bind(":identifier", $identifier);
+        $result_tags = $this->db->resultSet();
+        $out = [];
+        foreach ($result_tags as $lp => $tag) {
+            array_push($out, $tag->name);
         }
+        return $out;
     }
 
     /**
@@ -18,10 +29,12 @@ class Articles
      */
     public function getArticleByIdentifier($identifier)
     {
-        if (isset(Articles::$_all_articles, $identifier)) {
-            return Articles::$_all_articles[$identifier];
-        }
-        throw new Exception("Article " . $identifier . " not found!");
+        $this->db->query("SELECT * FROM articles WHERE identifier=:id");
+        $this->db->bind(":id", $identifier);
+        $result = $this->db->single();
+        $tags = $this->getTagsByIdentifier($identifier);
+        $result->tags = $tags;
+        return $result;
     }
 
     /**
@@ -31,17 +44,36 @@ class Articles
      */
     public function getArticlesByTag($tag)
     {
+        $this->db->query("
+        SELECT identifier, title, date_published, author, thumbnail_image, text_summary, contents 
+        FROM articles, article_tags, tags 
+        WHERE articles.id = article_tags.article_id AND tags.id = article_tags.tag_id AND tags.name = :tag
+        ORDER BY date_published DESC;");
+        $this->db->bind(":tag", $tag);
+        $result = $this->db->resultSet();
+
         $out = [];
-        foreach (Articles::$_all_articles as $id => $art_data) {
-            if (in_array($tag, $art_data->tags)) {
-                $out[$id] = $art_data;
-            }
+        foreach ($result as $lp => $art_data) {
+            $identifier = $art_data->identifier;
+            $tags = $this->getTagsByIdentifier($identifier);
+            $art_data->tags = $tags;
+            array_push($out, $art_data);
         }
         return $out;
     }
 
     public function getAllArticles()
     {
-        return Articles::$_all_articles;
+        $this->db->query("SELECT * FROM articles ORDER BY date_published DESC");
+        $result = $this->db->resultSet();
+
+        $out = [];
+        foreach ($result as $lp => $art_data) {
+            $identifier = $art_data->identifier;
+            $tags = $this->getTagsByIdentifier($identifier);
+            $art_data->tags = $tags;
+            array_push($out, $art_data);
+        }
+        return $out;
     }
 }
