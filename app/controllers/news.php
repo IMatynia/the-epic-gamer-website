@@ -26,11 +26,11 @@ class News extends Controller
         function chk_time($art_a, $art_b)
         {
             if ($art_a[1]->date_published > $art_b[1]->date_published) {
-                return 1;
+                return -1;
             } else if ($art_a[1]->date_published == $art_b[1]->date_published) {
                 return 0;
             } else {
-                return -1;
+                return 1;
             }
         }
 
