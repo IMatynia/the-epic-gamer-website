@@ -32,4 +32,12 @@ class Tags
         }
         return $results;
     }
+
+    public function addTag($name, $description)
+    {
+        $this->db->query("INSERT INTO tags (`name`, `description`) VALUES (:name, :description)");
+        $this->db->bind(":name", $name);
+        $this->db->bind(":description", $description);
+        return $this->db->execute();
+    }
 }
