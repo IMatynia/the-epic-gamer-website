@@ -1,28 +1,35 @@
 <?php
 class Tags
 {
-    private static $_all_tags;
-
     public function __construct()
     {
-        if (Tags::$_all_tags == null) {
-            $raw_tags = file_get_contents(TAGS_DB_FILE);
-            Tags::$_all_tags = json_decode($raw_tags, true);
-        }
+        $this->db = new Database;
     }
 
     public function isValidTag($tag)
     {
-        return isset(Tags::$_all_tags[$tag]);
+        $this->db->query("SELECT id FROM tags WHERE name=:name");
+        $this->db->bind(":name", $tag);
+        $result = $this->db->rowCount();
+        return ($result > 0);
     }
 
     public function getTagDescription($tag)
     {
-        return Tags::$_all_tags[$tag];
+        $this->db->query("SELECT description FROM tags WHERE name=:name");
+        $this->db->bind(":name", $tag);
+        $result = $this->db->single()->description;
+        return $result;
     }
 
     public function getAllTags()
     {
-        return Tags::$_all_tags;
+        $this->db->query("SELECT name, description FROM tags");
+        $raw_results = $this->db->resultSet();
+        $results = [];
+        foreach ($raw_results as $key => $tag_description) {
+            $results[$tag_description->name] = $tag_description->description;
+        }
+        return $results;
     }
 }
