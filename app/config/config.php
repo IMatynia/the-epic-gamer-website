@@ -6,6 +6,11 @@ define('DEFAULT_SITE_IMAGE', APPROOT . "public/media/reklamy/ez money.webp");
 
 if (APPROOT == "D:\\Programming\\the-epic-gamer-website\\app") {
     define('URLROOT', 'http://localhost/');
+
+    $cleardb_server = 'localhost:3306';
+    $cleardb_username = 'root';
+    $cleardb_password = '';
+    $cleardb_db = 'epic_gamer_local';
 } else {
     define('URLROOT', 'https://the-epic-gamer.herokuapp.com/');
 
