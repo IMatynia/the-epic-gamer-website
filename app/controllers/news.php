@@ -23,22 +23,6 @@ class News extends Controller
             $articles = $this->article_model->getAllArticles();
         }
 
-        function chk_time($art_a, $art_b)
-        {
-            if ($art_a[1]->date_published > $art_b[1]->date_published) {
-                return -1;
-            } else if ($art_a[1]->date_published == $art_b[1]->date_published) {
-                return 0;
-            } else {
-                return 1;
-            }
-        }
-
-        $articles = kayval_to_list($articles);
-        //Sort by post time
-        usort($articles, "chk_time");
-        
-
         $data = [
             "title" => $title,
             "articles" => $articles,
