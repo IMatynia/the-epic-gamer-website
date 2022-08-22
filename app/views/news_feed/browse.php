@@ -14,9 +14,7 @@ require_once APPROOT . '/views/includes/tag_nav.php';
     <div class="left_bar">LEFT BAR</div>
     <div class="article_container">
         <?php
-        foreach ($data["articles"] as $i => $sorted_art) {
-            $identifier = $sorted_art[0];
-            $article = $sorted_art[1];
+        foreach ($data["articles"] as $i => $article) {
             require APPROOT . '/views/news_feed/article_summary.php';
         }
         ?>
