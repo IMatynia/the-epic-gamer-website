@@ -27,16 +27,31 @@
   padding-top: 30px;
   padding-bottom: 30px;
   text-align: justify;
-  background: rgb(152,53,5);
-background: linear-gradient(120deg, rgb(102, 9, 9) 0%, rgb(181, 10, 10) 25.5%, rgba(109,39,39,0) 26%, rgba(57,22,22,0) 100%);
+  background: rgb(152, 53, 5);
+  background: linear-gradient(
+    120deg,
+    rgb(102, 9, 9) 0%,
+    rgb(181, 10, 10) 27.5%,
+    rgba(109, 39, 39, 0) 28%,
+    rgba(109, 39, 39, 0) 30%,
+    rgb(181, 10, 10) 30.1%,
+    rgb(181, 10, 10) 32%,
+    rgba(57, 22, 22, 0) 32.1%
+  );
 }
 
 .left_bar .current_section {
   padding: 10px;
   font-size: x-large;
-  background: rgb(221,106,68);
+  background: rgb(221, 106, 68);
   text-decoration: underline;
-background: linear-gradient(60deg, rgba(221,106,68,1) 0%, rgba(191,47,25,1) 79.9%, rgba(109,39,39,0) 80%, rgba(57,22,22,0) 100%);
+  background: linear-gradient(
+    60deg,
+    rgba(221, 106, 68, 1) 0%,
+    rgba(191, 47, 25, 1) 79.9%,
+    rgba(109, 39, 39, 0) 80%,
+    rgba(57, 22, 22, 0) 100%
+  );
 }
 
 .left_bar .description {
