@@ -12,7 +12,7 @@ class Api_keys
         $this->db->query("SELECT remaining_requests FROM api_keys WHERE api_key=:key");
         $this->db->bind(":key", $key);
         $result = $this->db->single();
-        if ($result == false)
+        if ($result === false)
         {
             return 0;
         }

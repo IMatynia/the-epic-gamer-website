@@ -14,6 +14,7 @@ class News extends Controller
 
     public function browse($tag = null)
     {
+        if($tag == "favicon.ico") $tag = null;
         $tag_description = null;
         // Filter by tag
         if ($tag != null) {
@@ -26,7 +27,6 @@ class News extends Controller
         }
 
         $data = [
-            "title" => $title,
             "articles" => $articles,
             "tag" => $tag,
             "tag_desc" => $tag_description,
@@ -43,7 +43,6 @@ class News extends Controller
     {
         $article = $this->article_model->getArticleByIdentifier($id_string);
         $data = [
-            "title" => $article->title,
             "article" => $article,
             "ogp_data" => new OGPdata(
                 $article->title,

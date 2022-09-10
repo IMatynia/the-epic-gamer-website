@@ -33,6 +33,13 @@ class Tags
         return $results;
     }
 
+    public function getAllTagsDetailed()
+    {
+        $this->db->query("SELECT id, name, description FROM tags ORDER BY name");
+        $raw_results = $this->db->resultSet();
+        return $raw_results;
+    }
+
     public function addTag($name, $description)
     {
         $this->db->query("INSERT INTO tags (`name`, `description`) VALUES (:name, :description)");
