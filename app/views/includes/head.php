@@ -9,5 +9,17 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="<?php echo URLROOT ?>/public/js/hax_script.js"></script>
-    <title><?php if(isset($data["title"])) {echo $data["title"];} else {echo SITENAME;} ?></title>
+    <?php
+    if (isset($data["ogp_data"])) {
+        require_once APPROOT . '/views/includes/ogp_header.php';
+        $final_title = $data["ogp_data"]->title;
+    } else {
+        $final_title = SITENAME;
+    }
+
+    if (isset($data["page_title"])) {
+        $final_title = $data["page_title"];
+    }
+    echo '<title>' . $final_title . '</title>';
+    ?>
 </head>
