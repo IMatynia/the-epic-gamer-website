@@ -1,9 +1,8 @@
 <?php
-require_once APPROOT . '/views/includes/ogp_header.php';
+require_once APPROOT . '/views/includes/head.php';
 ?>
 
 <head>
-    <title><?php echo $data["title"]; ?></title>
     <style>
         body {
             background: black;

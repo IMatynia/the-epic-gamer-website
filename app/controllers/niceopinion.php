@@ -8,7 +8,7 @@ class NiceOpinion extends Controller
     public function index()
     {
         $data = [
-            "title" => "Nice opinion"
+            "ogp_data" => new OGPdata("Nice opinion", "There might be a problem with your statement...")
         ];
         $this->view('hax', $data);
     }

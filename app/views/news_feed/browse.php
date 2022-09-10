@@ -1,6 +1,5 @@
 <?php
 require_once APPROOT . '/views/includes/head.php';
-require_once APPROOT . '/views/includes/ogp_header.php';
 require_once APPROOT . '/views/includes/nav.php';
 require_once APPROOT . '/views/includes/tag_nav.php';
 ?>
@@ -13,7 +12,7 @@ require_once APPROOT . '/views/includes/tag_nav.php';
 <div id="contents">
     <div class="left_bar">
         <div class="welcome">
-            Welcome to the most <i>epic</i> website on the internet!
+            <i>Epic gaming,<br>Epic news</i>
         </div>
         <div class="current_section delicate_shadow"><?php if(isset($data["tag"])) echo strtoupper($data["tag"]) . " &#8658"; ?> </div>
         <div class="description">
