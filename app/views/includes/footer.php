@@ -1,3 +1,3 @@
-<footer class="dark">
-    Matyniov's Corp. | No rights reserved
+<footer>
+    <div>Matyniov's Corp. | No rights reserved</div>
 </footer>

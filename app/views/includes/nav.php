@@ -1,3 +1,7 @@
+<head>
+    <link rel="stylesheet" href="<?php echo URLROOT ?>/public/css/navigation.css">
+</head>
+
 <nav class="top_nav">
     <div class="top_title">
         <a href="<?php echo URLROOT?>">THE EPIC GAMER</a></div>

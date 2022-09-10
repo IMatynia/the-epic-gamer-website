@@ -1,3 +1,7 @@
+<head>
+    <link rel="stylesheet" href="<?php echo URLROOT ?>/public/css/navigation.css">
+</head>
+
 <?php
 if (!isset($data["nav_tags"])) {
     throw new Exception("Missing tags for tag navigation bar");
