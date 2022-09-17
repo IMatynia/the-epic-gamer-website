@@ -101,8 +101,13 @@ class Articles
 
     public function removeArticleByIdentifier($identifier)
     {
+        $article_id = $this->getArticleIDbyIdentifier($identifier);
         $this->db->query("DELETE FROM articles WHERE identifier=:identifier");
         $this->db->bind(":identifier", $identifier);
+        $this->db->execute();
+
+        $this->db->query("DELETE FROM article_tags WHERE article_id=:id");
+        $this->db->bind(":id", $article_id);
         $this->db->execute();
     }
 
