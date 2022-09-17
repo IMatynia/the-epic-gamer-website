@@ -2,6 +2,7 @@
 
 <head>
     <link rel="stylesheet" href="<?php echo URLROOT ?>/public/css/hax.css">
+    <script src="<?php echo URLROOT ?>/public/js/hax_script.js"></script>
 </head>
 
 <div id="hax">
