@@ -5,8 +5,9 @@ require_once APPROOT . '/views/includes/tag_nav.php';
 ?>
 
 <head>
-    <link rel="stylesheet" href="<?php echo URLROOT ?>/public/css/news_front_page.css">
-    <link rel="stylesheet" href="<?php echo URLROOT ?>/public/css/article.css">
+    <link rel="stylesheet" href="<?php echo URLROOT ?>/public/css/browse_news.css">
+    <link rel="stylesheet" href="<?php echo URLROOT ?>/public/css/article_summary.css">
+    <link rel="stylesheet" href="<?php echo URLROOT ?>/public/css/left_bar.css">
 </head>
 
 <div id="contents">

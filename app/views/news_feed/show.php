@@ -8,16 +8,23 @@ $article = $data["article"];
 
 <head>
     <link rel="stylesheet" href="<?php echo URLROOT ?>/public/css/article.css">
+    <link rel="stylesheet" href="<?php echo URLROOT ?>/public/css/nice_default_tags.css">
 </head>
 
-<div class="article">
-    <div class="thumbnail">
-        <img src="<?php echo $article->thumbnail_image; ?>" />
+<div class="article_container">
+    <?php
+        $actual_img = "<img src='" . $article->thumbnail_image . "' />";
+        echo snug_image($article->thumbnail_image, ["image"], $actual_img);
+    ?>
+    <div class="title">
+        <?php echo $article->title; ?>
     </div>
-
-    <h1> <?php echo $article->title; ?> </h1>
-    <h2> <?php echo $article->date_published . " | " . $article->author; ?> </h2>
-    <p> <?php echo $article->contents; ?> </p>
+    <div class="details">
+        <?php echo $article->date_published . " | " . $article->author . " | " . join(" / ", $article->tags); ?>
+    </div>
+    <div class="contents nice_default_tags">
+        <?php echo $article->contents; ?>
+    </div>
 </div>
 
 <?php require APPROOT . '/views/includes/footer.php'; ?>
