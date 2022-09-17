@@ -5,6 +5,7 @@ class News extends Controller
     {
         $this->article_model = $this->model("Articles");
         $this->tags_model = $this->model("Tags");
+        $this->url_destination = "news/browse/";
     }
 
     public function index($tag = null)
@@ -14,7 +15,7 @@ class News extends Controller
 
     public function browse($tag = null)
     {
-        if($tag == "favicon.ico") $tag = null;
+        if ($tag == "favicon.ico") $tag = null;
         $tag_description = null;
         // Filter by tag
         if ($tag != null) {
@@ -34,7 +35,8 @@ class News extends Controller
                 $title,
                 "Browse REAL news brought to you by epic gamer journalists like you. Epic gaming. Epic news."
             ),
-            "nav_tags" => $this->tags_model->getAllTags()
+            "nav_tags" => $this->tags_model->getAllTags(),
+            "url_destination" => $this->url_destination
         ];
         $this->view('news_feed/browse', $data);
     }
@@ -50,7 +52,8 @@ class News extends Controller
                 $article->thumbnail_image,
                 "article"
             ),
-            "nav_tags" => $this->tags_model->getAllTags()
+            "nav_tags" => $this->tags_model->getAllTags(),
+            "url_destination" => $this->url_destination
         ];
         $this->view('news_feed/show', $data);
     }
