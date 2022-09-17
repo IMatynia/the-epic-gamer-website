@@ -6,6 +6,8 @@
   --medium-bg: rgb(14, 45, 53);
   --high-bg: rgb(26, 62, 72);
   --very-high-bg: rgb(47, 92, 104);
+  --nice-green: rgb(34, 146, 99);
+  --default-trans: 0.3s;
 }
 
 body {
@@ -28,6 +30,17 @@ a {
   color: inherit;
 }
 
+hr {
+  width: 100%;
+  border-color: var(--primary-accent);
+  border-style: solid;
+  height: 2px;
+  border-width: 1px;
+  border-left-style: hidden;
+  border-right-style: hidden;
+  border-bottom-style: hidden;
+}
+
 a:hover {
   text-decoration: underline;
 }
@@ -45,11 +58,12 @@ a:hover {
   }
 }
 
+.cool_hover {
+  transition-duration: var(--default-trans);
+}
+
 .cool_hover:hover {
   background: rgba(0, 0, 0, 30%) !important;
-  animation-name: fade_in !important;
-  animation-duration: 0.25s !important;
-  animation-timing-function: ease-out;
 }
 
 .cool_hover:active {
@@ -74,4 +88,20 @@ a:hover {
 
 .delicate_shadow {
   text-shadow: 1px 1px 1px var(--lowest-bg);
+}
+
+.snug_fit_image {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+footer {
+  background-color: var(--medium-bg);
+  color: var(--primary-full-bright);
+  text-align: center;
+  font-style: italic;
+  font-size: small;
+  padding: 10px;
+  margin-top: 100px;
 }
