@@ -1,0 +1,76 @@
+.master_container {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 30px;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 3;
+}
+
+.gifs img {
+  height: 120px;
+  margin: 10px;
+}
+
+.result .gifs {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.side_bar {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.side_bar img {
+  width: 250px;
+  margin: 10px;
+}
+
+.result p {
+  font-size: large;
+}
+
+.result .title {
+  font-size: 50px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.result .score {
+  font-size: 70px;
+  font-weight: bold;
+  border-radius: 10px;
+  background-color: var(--high-bg);
+  padding: 20px;
+}
+
+.perfect_score {
+  color: rgb(0, 230, 215);
+}
+
+.good_score {
+  color: rgb(44, 219, 0);
+}
+
+.mid_score {
+  color: yellow;
+}
+
+.poor_score {
+  color: rgb(255, 162, 0);
+}
+
+.terrible_score {
+  color: red;
+}

@@ -1,0 +1,25 @@
+.quiz_summary {
+  width: 250px;
+  background-color: var(--medium-bg);
+  border-top: 2px solid var(--primary-accent);
+}
+
+.quiz_summary .title {
+  background-color: var(--high-bg);
+  padding: 10px;
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+}
+
+.quiz_summary .thumbnail {
+  width: 250px;
+  height: 300px;
+}
+
+.quiz_summary .details {
+  padding: 5px;
+  font-size: small;
+  color: var(--primary-full-bright);
+  text-align: center;
+}
