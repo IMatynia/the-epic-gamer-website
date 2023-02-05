@@ -2,7 +2,14 @@
 define('APPROOT', dirname(dirname(__FILE__)));
 define('DEFAULT_SITE_IMAGE', APPROOT . "public/media/reklamy/ez money.webp");
 
-if (APPROOT == "D:\\Programming\\the-epic-gamer-website\\app") {
+if (APPROOT == "/opt/lampp/htdocs/app") {
+    define('URLROOT', "http://" . $_SERVER["SERVER_NAME"] . "/");
+
+    $cleardb_server = 'localhost:3306';
+    $cleardb_username = 'root';
+    $cleardb_password = '';
+    $cleardb_db = 'teg_local';
+} else if (APPROOT == "D:\\Programming\\the-epic-gamer-website\\app") {
     define('URLROOT', "http://" . $_SERVER["SERVER_NAME"] . "/");
 
     $cleardb_server = 'localhost:3306';
