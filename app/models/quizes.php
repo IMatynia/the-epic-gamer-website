@@ -1,120 +1,128 @@
 <?php
-class Quizes
-{
-    public function __construct()
-    {
-        $this->db = new Database;
-    }
 
+class Quizes extends DBModel
+{
     public function getAllQuizes()
     {
-        $this->db->query("SELECT id, identifier, title, description, image, category FROM quizes");
+        $this->db->query("SELECT * FROM quizes_w_authors;");
         $quizes = $this->db->resultSet();
 
         foreach ($quizes as $quiz) {
-            $quiz->question_count = $this->getQuizQuestionCount($quiz->id);
+            $quiz->question_count = $this->getQuizQuestionCount($quiz->sname);
+            $quiz->tags = $this->getQuizTags($quiz->sname);
         }
         return $quizes;
     }
 
     public function getQuizesByCategory($category)
     {
-        $this->db->query("SELECT id, identifier, title, description, image, category FROM quizes WHERE category=:category");
+        $this->db->query("
+            select * from quizes_w_authors
+            inner join (
+                select quiz_id from quiz_tags 
+                where tag_id = (select tag_id from tags where name = :category)
+            ) sub on sub.quiz_id = quizes_w_authors.quiz_id;
+        ");
         $this->db->bind(":category", $category);
         $quizes = $this->db->resultSet();
 
         foreach ($quizes as $quiz) {
-            $quiz->question_count = $this->getQuizQuestionCount($quiz->id);
+            $quiz->question_count = $this->getQuizQuestionCount($quiz->sname);
+            $quiz->tags = $this->getQuizTags($quiz->sname);
         }
         return $quizes;
     }
 
-    public function getAllCategories()
+    public function getQuizSummary($sname)
     {
-        $this->db->query("SELECT category, count(*) as quiz_number FROM quizes GROUP BY category ORDER BY category");
-        $result = $this->db->resultSet();
-        $out = [];
-        foreach ($result as $category) {
-            $out[$category->category] = $category->quiz_number;
-        }
-        return $out;
-    }
-
-    public function getQuizSummary($identifier)
-    {
-        $this->db->query("SELECT id, identifier, title, description, image, category FROM quizes WHERE identifier=:identifier");
-        $this->db->bind(":identifier", $identifier);
+        $this->db->query("select * from quizes_w_authors where sname = :sname");
+        $this->db->bind(":sname", $sname);
         $quiz_data = $this->db->single();
-        if ($quiz_data === false) {
-            throw new Exception("Quiz not found");
-        }
 
-        $question_count = $this->getQuizQuestionCount($quiz_data->id);
-
-        $quiz_data->question_count = $question_count;
+        $quiz_data->question_count = $this->getQuizQuestionCount($quiz_data->sname);
+        $quiz_data->tags = $this->getQuizTags($quiz_data->sname);
         return $quiz_data;
     }
 
-    public function getQuizQuestionCount($id)
+    public function getQuizQuestionCount($sname)
     {
-        $this->db->query("SELECT count(*) as count FROM questions WHERE quiz_id = :quiz_id");
-        $this->db->bind(":quiz_id", $id);
+        $this->db->query("SELECT count(*) as count FROM quiz_questions WHERE quiz_id = (select quiz_id from quizes where sname = :sname)");
+        $this->db->bind(":sname", $sname);
         return $this->db->single()->count;
     }
 
-    public function getQuizIDbyIdentifier($identifier)
+    public function getQuizQuestions($sname)
     {
-        $this->db->query("SELECT id FROM quizes WHERE identifier = :identifier");
-        $this->db->bind(":identifier", $identifier);
-        $thing = $this->db->single();
-        if ($thing === false) {
-            throw new Exception("No quiz with this identifier is present!");
-        } else {
-            return $thing->id;
-        }
-    }
-
-    public function getQuizQuestions($quiz_id)
-    {
-        $this->db->query("SELECT id, content, type, importance FROM questions WHERE quiz_id = :quiz_id ORDER BY id");
-        $this->db->bind(":quiz_id", $quiz_id);
+        $this->db->query("SELECT * FROM quiz_questions WHERE quiz_id = (select quiz_id from quizes where sname = :sname) ORDER BY pos");
+        $this->db->bind(":sname", $sname);
         return $this->db->resultSet();
     }
 
-    public function addQuiz($identifier, $title, $image, $description, $category)
+    public function addQuiz(string $sname, string $author_name, string $title, string $description, string $thumbnail = null)
     {
         # Add quiz description to quizes table
-        $this->db->query("INSERT INTO quizes (`identifier`, `title`, `image`, `description`, `category`) VALUES (:identifier, :title, :image, :description, :category)");
-        $this->db->bind(":identifier", $identifier);
+        $this->db->query("call add_quiz(:sname, :author_name, :title, :thumbnail, :description)");
+        $this->db->bind(":sname", $sname);
+        $this->db->bind(":author_name", $author_name);
         $this->db->bind(":title", $title);
-        $this->db->bind(":image", $image);
+        $this->db->bind(":thumbnail", $thumbnail);
         $this->db->bind(":description", $description);
-        $this->db->bind(":category", $category);
-        $ret = $this->db->execute();
-        if ($ret === false) throw new Exception("Failed to add quiz");
+        return $this->db->execute();
     }
 
-    public function removeQuizByIdentifier($identifier)
-    {
-        $quiz_id = $this->getQuizIDbyIdentifier($identifier);
-        $this->db->query("DELETE FROM quizes WHERE identifier=:identifier");
-        $this->db->bind(":identifier", $identifier);
-        $this->db->execute();
-
-        $this->db->query("DELETE FROM questions WHERE quiz_id=:id");
-        $this->db->bind(":id", $quiz_id);
-        $this->db->execute();
-    }
-
-    public function addQuestion($quiz_id, $content, $type, $importance)
+    public function addQuestion(string $sname, int $pos, int $type, float $ans_value = 1.0, string $question, ?string $image)
     {
         # Add quiz description to quizes table
-        $this->db->query("INSERT INTO questions (`quiz_id`, `content`, `type`, `importance`) VALUES (:quiz_id, :content, :type, :importance)");
-        $this->db->bind(":quiz_id", $quiz_id);
-        $this->db->bind(":content", $content);
+        $this->db->query("call add_question(:sname, :pos, :type, :ans_value, :question, :image)");
+        $this->db->bind(":sname", $sname);
+        $this->db->bind(":pos", $pos);
         $this->db->bind(":type", $type);
-        $this->db->bind(":importance", $importance);
-        $ret = $this->db->execute();
-        if ($ret === false) throw new Exception("Failed to add question");
+        $this->db->bind(":ans_value", $ans_value);
+        $this->db->bind(":question", $question);
+        $this->db->bind(":image", $image);
+        return $this->db->execute();
+    }
+
+    public function addQuizTag(string $quiz_sname, string $tag_name)
+    {
+        $this->db->query("call add_quiz_tag(:sname, :tag_name)");
+        $this->db->bind(":sname", $quiz_sname);
+        $this->db->bind(":tag_name", $tag_name);
+        return $this->db->execute();
+    }
+
+    public function purgeQuizes()
+    {
+        $this->db->query("delete from quizes");
+        $this->db->execute();
+    }
+
+    public function purgeQuestions()
+    {
+        $this->db->query("delete from quiz_questions");
+        $this->db->execute();
+    }
+
+    public function purgeQuizTags()
+    {
+        $this->db->query("delete from quiz_tags");
+        $this->db->execute();
+    }
+
+    private function getQuizTags($sname): array
+    {
+        $this->db->query("
+        select tags.name from tags
+        inner join quiz_tags on tags.tag_id = quiz_tags.tag_id
+        inner join quizes on quiz_tags.quiz_id = quizes.quiz_id
+        where quizes.sname = :sname;
+        ");
+        $this->db->bind(":sname", $sname);
+        $result_tags = $this->db->resultSet();
+        $out = [];
+        foreach ($result_tags as $lp => $tag) {
+            array_push($out, $tag->name);
+        }
+        return $out;
     }
 }

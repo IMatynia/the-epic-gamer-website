@@ -1,10 +1,21 @@
 <?php
+
+require_once MODEL . "articles.php";
+require_once MODEL . "tags.php";
+
+require_once VIEW . "news_feed/browse.php";
+require_once VIEW . "news_feed/show.php";
+
 class News extends Controller
 {
+    public Articles $article_model;
+    public Tags $tags_model;
+    public string $url_destination;
+
     public function __construct()
     {
-        $this->article_model = $this->model("Articles");
-        $this->tags_model = $this->model("Tags");
+        $this->article_model = new Articles();
+        $this->tags_model = new Tags();
         $this->url_destination = "news/browse/";
     }
 
@@ -27,34 +38,29 @@ class News extends Controller
             $articles = $this->article_model->getAllArticles();
         }
 
-        $data = [
-            "articles" => $articles,
-            "tag" => $tag,
-            "tag_desc" => $tag_description,
-            "ogp_data" => new OGPdata(
+        $view = new NewsBrowseView(
+            $tag,
+            $tag_description,
+            $articles,
+            new OGPdata(
                 $title,
                 "Browse REAL news brought to you by epic gamer journalists like you. Epic gaming. Epic news."
             ),
-            "nav_tags" => $this->tags_model->getAllTags(),
-            "url_destination" => $this->url_destination
-        ];
-        $this->view('news_feed/browse', $data);
+            $this->tags_model->getAllArticleTags(),
+            $this->url_destination
+        );
+        $view->render();
     }
 
-    public function show($id_string)
+    public function show(string $id_string)
     {
         $article = $this->article_model->getArticleByIdentifier($id_string);
-        $data = [
-            "article" => $article,
-            "ogp_data" => new OGPdata(
-                $article->title,
-                $article->text_summary,
-                $article->thumbnail_image,
-                "article"
-            ),
-            "nav_tags" => $this->tags_model->getAllTags(),
-            "url_destination" => $this->url_destination
-        ];
-        $this->view('news_feed/show', $data);
+        $view = new ShowArticleView($article, new OGPdata(
+            $article->title,
+            $article->summary,
+            $article->thumbnail,
+            "article"
+        ), $this->tags_model->getAllArticleTags(), $this->url_destination);
+        $view->render();
     }
 }

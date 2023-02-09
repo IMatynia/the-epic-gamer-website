@@ -1,39 +1,29 @@
 <?php
 
-class Api_keys
+class Api_keys extends DBModel
 {
-    public function __construct()
-    {
-        $this->db = new Database;
-    }
 
-    public function checkRemainingRequests($key)
+    /**
+     * @param string $key api key to check the priviliges of (and decrease its quota)
+     * @return bool true if api key was valid, false if api key is invalid
+     */
+    public function checkPriviliges(string $key) : bool
     {
-        $this->db->query("SELECT remaining_requests FROM api_keys WHERE api_key=:key");
+        $this->db->query("SELECT use_api_key(:key) as success");
         $this->db->bind(":key", $key);
-        $result = $this->db->single();
-        if ($result === false)
-        {
-            return 0;
-        }
-        else
-        {
-            return $result->remaining_requests;
-        }
+        $success = $this->db->single()->success;
+        return boolval($success);
     }
 
-    public function checkPrivilige($key)
+    public function generateNewKey(string $gen_string, ?int $quota, ?int $duration)
     {
-        $remaining = $this->checkRemainingRequests($key);
-        if ($remaining > 0) {
-            // Decrease the remaining requests
-            $this->db->query("UPDATE api_keys SET remaining_requests = :remaining WHERE api_key=:key");
-            $this->db->bind(":remaining", $remaining - 1);
-            $this->db->bind(":key", $key);
-            $this->db->execute();
-            return true;
-        } else {
-            return false;
-        }
+        $this->db->query("
+        SELECT generate_api_key(:gen_string, :quota, :duration);
+        ");
+        $this->db->bind(":gen_string", $gen_string);
+        $this->db->bind(":quota", $quota);
+        $this->db->bind(":duration", $duration);
+        $key = $this->db->single();
+        return $key;
     }
 }

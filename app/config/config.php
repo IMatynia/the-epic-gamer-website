@@ -1,6 +1,8 @@
 <?php
 define('APPROOT', dirname(dirname(__FILE__)));
-define('DEFAULT_SITE_IMAGE', APPROOT . "public/media/reklamy/ez money.webp");
+const LIB = APPROOT . "/libraries/";
+const MODEL = APPROOT . "/models/";
+const VIEW = APPROOT . "/views/";
 
 if (APPROOT == "/opt/lampp/htdocs/app") {
     define('URLROOT', "http://" . $_SERVER["SERVER_NAME"] . "/");
@@ -34,3 +36,5 @@ define('DB_NAME', $cleardb_db); //Add your DB Name
 
 //Sitename
 define('SITENAME', 'The Epic Gamer');
+const EXTREMIST_COEFFICIENT = 1.2;
+const DEFAULT_SITE_IMAGE = URLROOT . "/public/media/favicon.ico";

@@ -1,4 +1,6 @@
 <?php
+require_once VIEW . "misc/about_index.php";
+
 class About extends Controller
 {
     public function __construct()
@@ -7,9 +9,7 @@ class About extends Controller
 
     public function index()
     {
-        $data = [
-            "ogp_data" => new OGPdata("About " . SITENAME, "Info about this epic website")
-        ];
-        $this->view("misc/about_index");
+        $view = new AboutIndexView(new OGPdata("About " . SITENAME, "Info about this epic website"));
+        $view->render();
     }
 }

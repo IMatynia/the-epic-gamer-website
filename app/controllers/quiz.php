@@ -1,10 +1,21 @@
 <?php
+require_once MODEL . "quizes.php";
+require_once MODEL . "tags.php";
+
+require_once VIEW . "quiz/browse.php";
+require_once VIEW . "quiz/results.php";
+require_once VIEW . "quiz/show.php";
+
 class Quiz extends Controller
 {
+    public Quizes $quiz_model;
+    public Tags $tag_model;
+    public string $url_destination;
+
     public function __construct()
     {
-        $this->quiz_model = $this->model("Quizes");
-        define("EXTREMIST_COEFFICIENT", 1.2);
+        $this->quiz_model = new Quizes();
+        $this->tag_model = new Tags();
         $this->url_destination = "quiz/browse/";
     }
 
@@ -23,42 +34,38 @@ class Quiz extends Controller
             $quizes = $this->quiz_model->getQuizesByCategory($category);
         }
 
-
-
-        $data = [
-            "ogp_data" => new OGPdata(
+        $view = new QuizBrowseView(
+            $category,
+            $quizes,
+            new OGPdata(
                 $page_title,
                 "Embark on a journey of self discovery with our quizes! We offer a wide selection of categories to choose from! Just give us a try!"
             ),
-            "quizes" => $quizes,
-            "category" => $category,
-            "url_destination" => $this->url_destination,
-            "nav_tags" => $this->quiz_model->getAllCategories()
-        ];
-        $this->view("quiz/browse", $data);
+            $this->tag_model->getAllQuizTags(),
+            $this->url_destination
+        );
+        $view->render();
     }
 
-    public function show($identifier)
+    public function show($sname)
     {
-        $quiz_id = $this->quiz_model->getQuizIDbyIdentifier($identifier);
-        $quiz_summary = $this->quiz_model->getQuizSummary($identifier);
-        $questions = $this->quiz_model->getQuizQuestions($quiz_id);
+        $quiz_summary = $this->quiz_model->getQuizSummary($sname);
+        $questions = $this->quiz_model->getQuizQuestions($sname);
 
         $importance_sum = 0;
         foreach ($questions as $question) {
             $importance_sum += abs(floatval($question->importance));
         }
 
-        $data = [
-            "ogp_data" => new OGPdata($quiz_summary->title, $quiz_summary->description, $quiz_summary->image),
-            "quiz_summary" => $quiz_summary,
-            "quiz_questions" => $questions,
-            "importance_sum" => $importance_sum,
-            "url_destination" => $this->url_destination,
-            "nav_tags" => $this->quiz_model->getAllCategories()
-        ];
-
-        $this->view("quiz/show", $data);
+        $view = new QuizShowView(
+            $quiz_summary,
+            $questions,
+            $importance_sum,
+            new OGPdata($quiz_summary->title, $quiz_summary->description, $quiz_summary->thumbnail),
+            $this->tag_model->getAllQuizTags(),
+            $this->url_destination
+        );
+        $view->render();
     }
 
     public function results()
@@ -79,14 +86,17 @@ class Quiz extends Controller
 
         $percentage = round(min(100, max(0, ($anwsers_sum * EXTREMIST_COEFFICIENT + $importance_sum) / ($importance_sum * 2) * 100)), 1);
 
-        $data = [
-            "page_title" => "The results are in!",
-            "quiz_summary" => $quiz_summary,
-            "result" => $percentage,
-            "url_destination" => $this->url_destination,
-            "nav_tags" => $this->quiz_model->getAllCategories()
-        ];
-
-        $this->view("quiz/results", $data);
+        $view = new QuizResultsView(
+            $quiz_summary,
+            $percentage,
+            new OGPdata(
+                "Your results in " . $quiz_summary->title . " are in!",
+                "Congratulations! You got " . $percentage . "%!",
+                $quiz_summary->image
+            ),
+            $this->tag_model->getAllQuizTags(),
+            $this->url_destination
+        );
+        $view->render();
     }
 }

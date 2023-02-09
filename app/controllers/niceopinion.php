@@ -1,15 +1,12 @@
 <?php
+
+require_once VIEW . "hax.php";
+
 class NiceOpinion extends Controller
 {
-    public function __construct()
-    {
-    }
-
     public function index()
     {
-        $data = [
-            "ogp_data" => new OGPdata("Nice opinion", "There might be a problem with your statement...")
-        ];
-        $this->view('hax', $data);
+        $view = new IHaveYourIPAdress(new OGPdata("Nice opinion", "There might be a problem with your statement..."));
+        $view->render();
     }
 }

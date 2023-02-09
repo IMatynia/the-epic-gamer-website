@@ -1,19 +1,20 @@
 <?php
-class Articles
-{
-    public function __construct()
-    {
-        $this->db = new Database;
-    }
 
-    public function getTagsByIdentifier($identifier)
+class Articles extends DBModel
+{
+    /**
+     * @param string $sname sname of the article
+     * @return array array of tag names
+     */
+    public function getTagsOfArticle(string $sname): array
     {
         $this->db->query("
-        SELECT name
-        FROM articles, article_tags, tags 
-        WHERE articles.id = article_tags.article_id AND tags.id = article_tags.tag_id AND articles.identifier = :identifier
-        ORDER BY name");
-        $this->db->bind(":identifier", $identifier);
+        select tags.name from tags
+        inner join article_tags on tags.tag_id = article_tags.tag_id
+        inner join articles on article_tags.article_id = articles.article_id
+        where articles.sname = :sname;
+        ");
+        $this->db->bind(":sname", $sname);
         $result_tags = $this->db->resultSet();
         $out = [];
         foreach ($result_tags as $lp => $tag) {
@@ -24,38 +25,39 @@ class Articles
 
     /**
      * Returns the data of the article of a given ID
-     * 
-     * @param string $identifier the identifier 
+     *
+     * @param string $sname the identifier
      */
-    public function getArticleByIdentifier($identifier)
+    public function getArticleByIdentifier(string $sname)
     {
-        $this->db->query("SELECT * FROM articles WHERE identifier=:id");
-        $this->db->bind(":id", $identifier);
+        $this->db->query("SELECT * FROM articles_w_authors WHERE sname=:sname ");
+        $this->db->bind(":sname", $sname);
         $result = $this->db->single();
-        $tags = $this->getTagsByIdentifier($identifier);
+        $tags = $this->getTagsOfArticle($sname);
         $result->tags = $tags;
         return $result;
     }
 
     /**
      * Returns a list of articles containing given tag
-     * 
+     *
      * @param string $tag The tag to filer against
      */
-    public function getArticlesByTag($tag)
+    public function getArticlesByTag(string $tag): array
     {
         $this->db->query("
-        SELECT identifier, title, date_published, author, thumbnail_image, text_summary, contents 
-        FROM articles, article_tags, tags 
-        WHERE articles.id = article_tags.article_id AND tags.id = article_tags.tag_id AND tags.name = :tag
-        ORDER BY date_published DESC;");
+        select articles_w_authors.* from tags
+        inner join article_tags on tags.tag_id = article_tags.tag_id
+        inner join articles_w_authors on article_tags.article_id = articles_w_authors.article_id
+        where tags.name = :tag
+        ORDER BY date_published DESC");
         $this->db->bind(":tag", $tag);
         $result = $this->db->resultSet();
 
         $out = [];
         foreach ($result as $lp => $art_data) {
-            $identifier = $art_data->identifier;
-            $tags = $this->getTagsByIdentifier($identifier);
+            $sname = $art_data->sname;
+            $tags = $this->getTagsOfArticle($sname);
             $art_data->tags = $tags;
             array_push($out, $art_data);
         }
@@ -64,79 +66,52 @@ class Articles
 
     public function getAllArticles()
     {
-        $this->db->query("SELECT * FROM articles ORDER BY date_published DESC");
+        $this->db->query("SELECT * FROM articles_w_authors ORDER BY date_published DESC");
         $result = $this->db->resultSet();
 
         $out = [];
         foreach ($result as $lp => $art_data) {
-            $identifier = $art_data->identifier;
-            $tags = $this->getTagsByIdentifier($identifier);
+            $sname = $art_data->sname;
+            $tags = $this->getTagsOfArticle($sname);
             $art_data->tags = $tags;
             array_push($out, $art_data);
         }
         return $out;
     }
 
-    public function addNewArticle($identifier, $title, $author, $thumbnail_image, $text_summary, $contents, $tags)
+    public function addArticle(string $sname, string $title, string $author, string $summary, string $content, ?string $thumbnail = null): bool
     {
-        # Add article description to articles table
-        $this->db->query("INSERT INTO articles (`identifier`, `title`, `author`, `thumbnail_image`, `text_summary`, `contents`) VALUES (:identifier, :title, :author, :thumbnail_image, :text_summary, :contents)");
-        $this->db->bind(":identifier", $identifier);
-        $this->db->bind(":title", $title);
+        $this->db->query("
+            call add_article(:sname, :author, :title, :thumbnail, :summary, :content);
+        ");
         $this->db->bind(":author", $author);
-        $this->db->bind(":thumbnail_image", $thumbnail_image);
-        $this->db->bind(":text_summary", $text_summary);
-        $this->db->bind(":contents", $contents);
-        $ret = $this->db->execute();
-        if ($ret === false) throw new Exception("Failed to add article");
-
-        # Get the new articles' ID
-        $article_id = $this->getArticleIDbyIdentifier($identifier);
-
-        # Push it's tags into the DB
-        foreach ($tags as $tag_id) {
-            $this->addTagToArticle($tag_id, $article_id);
-        }
+        $this->db->bind(":sname", $sname);
+        $this->db->bind(":title", $title);
+        $this->db->bind(":thumbnail", $thumbnail);
+        $this->db->bind(":summary", $summary);
+        $this->db->bind(":content", $content);
+        return $this->db->execute();
     }
 
-    public function removeArticleByIdentifier($identifier)
+    public function addTagToArticle(string $art_sname, string $tag_name): bool
     {
-        $article_id = $this->getArticleIDbyIdentifier($identifier);
-        $this->db->query("DELETE FROM articles WHERE identifier=:identifier");
-        $this->db->bind(":identifier", $identifier);
-        $this->db->execute();
-
-        $this->db->query("DELETE FROM article_tags WHERE article_id=:id");
-        $this->db->bind(":id", $article_id);
-        $this->db->execute();
+        $this->db->query("
+            call add_article_tag(:sname, :tag_name);
+            ");
+        $this->db->bind(":sname", $art_sname);
+        $this->db->bind(":tag_name", $tag_name);
+        return $this->db->execute();
     }
 
-    public function getArticleIDbyIdentifier($identifier)
+    public function purgeArticles(): bool
     {
-        $this->db->query("SELECT id FROM articles WHERE identifier = :identifier");
-        $this->db->bind(":identifier", $identifier);
-        $thing = $this->db->single();
-        if ($thing === false) {
-            throw new Exception("No article with this identifier is present!");
-        } else {
-            return $thing->id;
-        }
+        $this->db->query("delete from articles");
+        return $this->db->execute();
     }
 
-    public function addTagToArticle($tag_id, $article_id)
+    public function purgeArticleTags(): bool
     {
-        $this->db->query("INSERT INTO article_tags (`article_id`, `tag_id`) VALUES (:article_id, :tag_id)");
-        $this->db->bind(":article_id", $article_id);
-        $this->db->bind(":tag_id", $tag_id);
-        $ret = $this->db->execute();
-        if ($ret === false) throw new Exception("Failed to add tag");
-    }
-
-    public function removeTagFromArticle($tag_id, $article_id)
-    {
-        $this->db->query("DELETE FROM article_tags WHERE `article_id` = :article_id AND `tag_id` = :tag_id");
-        $this->db->bind(":article_id", $article_id);
-        $this->db->bind(":tag_id", $tag_id);
-        $this->db->execute();
+        $this->db->query("delete from article_tags");
+        return $this->db->execute();
     }
 }
