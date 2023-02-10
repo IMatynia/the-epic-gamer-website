@@ -9,15 +9,17 @@ require_once VIEW . 'quiz/quiz_summary.php';
 class QuizBrowseView extends View
 {
     public ?string $category;
+    public ?string $cat_description;
     public array $quizes;
     public string $url_destination;
     public array $nav_tags;
     public OGPdata $ogp;
 
-    public function __construct(?string $category, array $quizes, OGPdata $ogp, array $nav_tags, string $url_destination)
+    public function __construct(?string $category, ?string $cat_description, array $quizes, OGPdata $ogp, array $nav_tags, string $url_destination)
     {
         $this->quizes = $quizes;
         $this->category = $category;
+        $this->cat_description = $cat_description;
         $this->url_destination = $url_destination;
         $this->nav_tags = $nav_tags;
         $this->ogp = $ogp;
@@ -46,7 +48,10 @@ class QuizBrowseView extends View
                 <div class="welcome">
                     <i>Epic gaming,<br>Epic quiz</i>
                 </div>
-                <div class="current_section delicate_shadow"><?php if (isset($this->category)) echo strtoupper($this->category) . " &#8658"; ?> </div>
+                <div class="current_section delicate_shadow"><?php if(isset($this->category)) echo strtoupper($this->category) . " &#8658"; ?> </div>
+                <div class="description">
+                    <?php echo ucfirst($this->cat_description); ?>
+                </div>
             </div>
             <div class="quiz_container">
                 <?php

@@ -41,7 +41,7 @@ class ShowArticleView extends View
 
         <div class="article_container">
             <?php
-            $actual_img = "<img src='" . $this->article->thumbnail ?: DEFAULT_SITE_IMAGE . "' />";
+            $actual_img = "<img src='" . ($this->article->thumbnail ?: DEFAULT_SITE_IMAGE) . "' />";
             echo snug_image($this->article->thumbnail, ["image"], $actual_img);
             ?>
             <div class="title">

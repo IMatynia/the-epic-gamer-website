@@ -26,16 +26,20 @@ class Quiz extends Controller
 
     public function browse($category = null)
     {
+        $cat_description = null;
         if ($category == null) {
             $page_title = "Embark on a journey of self discovery with our quizes";
             $quizes = $this->quiz_model->getAllQuizes();
+
         } else {
             $page_title = "Discover yourself in " . $category . " quizes";
             $quizes = $this->quiz_model->getQuizesByCategory($category);
+            $cat_description = $this->tag_model->getTagDescription($category);
         }
 
         $view = new QuizBrowseView(
             $category,
+            $cat_description,
             $quizes,
             new OGPdata(
                 $page_title,
