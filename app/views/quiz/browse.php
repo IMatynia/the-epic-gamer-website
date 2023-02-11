@@ -11,15 +11,17 @@ class QuizBrowseView extends View
     public ?string $category;
     public ?string $cat_description;
     public array $quizes;
+    public ?array $ads;
     public string $url_destination;
     public array $nav_tags;
     public OGPdata $ogp;
 
-    public function __construct(?string $category, ?string $cat_description, array $quizes, OGPdata $ogp, array $nav_tags, string $url_destination)
+    public function __construct(?string $category, ?string $cat_description, array $quizes, ?array $ads, OGPdata $ogp, array $nav_tags, string $url_destination)
     {
         $this->quizes = $quizes;
         $this->category = $category;
         $this->cat_description = $cat_description;
+        $this->ads = $ads;
         $this->url_destination = $url_destination;
         $this->nav_tags = $nav_tags;
         $this->ogp = $ogp;
@@ -31,7 +33,7 @@ class QuizBrowseView extends View
         $nav = new NavView();
         $tag_nav = new TagNavView($this->url_destination, $this->nav_tags);
         $footer = new FooterView();
-        $ads = new AdsView();
+        $ads = new AdsView($this->ads);
 
         $head->render();
         $nav->render();

@@ -1,6 +1,7 @@
 <?php
 require_once MODEL . "quizes.php";
 require_once MODEL . "tags.php";
+require_once MODEL . "ads.php";
 
 require_once VIEW . "quiz/browse.php";
 require_once VIEW . "quiz/results.php";
@@ -10,12 +11,14 @@ class Quiz extends Controller
 {
     public Quizes $quiz_model;
     public Tags $tag_model;
+    public Ads $ads_model;
     public string $url_destination;
 
     public function __construct()
     {
         $this->quiz_model = new Quizes();
         $this->tag_model = new Tags();
+        $this->ads_model = new Ads();
         $this->url_destination = "quiz/browse/";
     }
 
@@ -41,6 +44,7 @@ class Quiz extends Controller
             $category,
             $cat_description,
             $quizes,
+            $this->ads_model->getAllAds(),
             new OGPdata(
                 $page_title,
                 "Embark on a journey of self discovery with our quizes! We offer a wide selection of categories to choose from! Just give us a try!"

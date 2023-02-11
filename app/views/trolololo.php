@@ -57,10 +57,10 @@ class WeDoABitOfTrolling extends View
         <body>
         <div id="contents">
             <a href="<?php echo URLROOT . "niceopinion"; ?>">
-                <video id="trollfacer" src="<?php echo URLROOT ?>/public/media/troll.mp4" loop></video>
+                <video id="trollfacer" src="https://cdn.discordapp.com/attachments/1072839306294599760/1073951121451778069/troll.mp4" loop></video>
             </a>
             <button id="butt">Click me! (not a troll)</button>
-            <audio id="number13" src="<?php echo URLROOT ?>/public/media/disk_13.mp3" loop></audio>
+            <audio id="number13" src="https://cdn.discordapp.com/attachments/1072839306294599760/1073951176640430090/disk_13.mp3" loop></audio>
         </div>
 
 

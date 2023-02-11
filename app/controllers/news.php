@@ -2,6 +2,7 @@
 
 require_once MODEL . "articles.php";
 require_once MODEL . "tags.php";
+require_once MODEL . "ads.php";
 
 require_once VIEW . "news_feed/browse.php";
 require_once VIEW . "news_feed/show.php";
@@ -10,12 +11,14 @@ class News extends Controller
 {
     public Articles $article_model;
     public Tags $tags_model;
+    public Ads $ads_model;
     public string $url_destination;
 
     public function __construct()
     {
         $this->article_model = new Articles();
         $this->tags_model = new Tags();
+        $this->ads_model = new Ads();
         $this->url_destination = "news/browse/";
     }
 
@@ -42,6 +45,7 @@ class News extends Controller
             $tag,
             $tag_description,
             $articles,
+            $this->ads_model->getAllAds(),
             new OGPdata(
                 $title,
                 "Browse REAL news brought to you by epic gamer journalists like you. Epic gaming. Epic news."

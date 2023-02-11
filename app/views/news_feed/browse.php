@@ -11,15 +11,17 @@ class NewsBrowseView extends View
     public ?string $tag;
     public ?string $tag_desc;
     public array $articles;
+    public ?array $ads;
     public string $url_destination;
     public array $nav_tags;
     public OGPdata $ogp;
 
-    public function __construct(?string $tag, ?string $tag_desc, array $articles, OGPdata $ogp, array $nav_tags, string $url_destination)
+    public function __construct(?string $tag, ?string $tag_desc, array $articles, ?array $ads, OGPdata $ogp, array $nav_tags, string $url_destination)
     {
         $this->tag = $tag;
         $this->tag_desc = $tag_desc;
         $this->articles = $articles;
+        $this->ads = $ads;
         $this->url_destination = $url_destination;
         $this->nav_tags = $nav_tags;
         $this->ogp = $ogp;
@@ -31,7 +33,7 @@ class NewsBrowseView extends View
         $head = new HeadView($this->ogp);
         $nav = new NavView();
         $tag_nav = new TagNavView($this->url_destination, $this->nav_tags);
-        $ads = new AdsView();
+        $ads = new AdsView($this->ads);
         $footer = new FooterView();
 
         $head->render();
