@@ -44,18 +44,10 @@ class AboutIndexView extends View
 
             <div class="inspiration">Gamers of the world UNITE!</br>All you have to loose are your virginities...</div>
             <h2 id="data_and_privacy">Data protection and privacy</h2>
-                <h3>This website doesnt use any cookies at all and does not save any user data anywhere. Data transfer
+                <h3>This website doesn't use any cookies at all and does not save any user data anywhere. Data transfer
                     is
                     only one way - from the server to the user. That's it. No targeted ads, no trackers, no tracking
                     cookies. Nothing. </h3>
-                <p>I'm waaaaaaaay too lazy to care for the legal stuffs related to EU laws so i will just abstain
-                    completely. Not like i have any reason to collect all this data anyway. I aint no data sucking
-                    zuckerbergian creature. Your data is safe here. I might use some <i>"strictly functional
-                        cookies"</i>
-                    here and there in the future.</p>
-                <p>See? The chilling effect of <i>data protection policies</i>? I'm really glad we are in the EU. It's a
-                    body big enough that it can just do this and the companies have to cope, cus EU is like the biggest
-                    consumer market on earth. I just wish they had a special aid program for gamer class relief</p>
         </div>
 
         <?php

@@ -5,34 +5,31 @@ const MODEL = APPROOT . "/models/";
 const VIEW = APPROOT . "/views/";
 
 if (APPROOT == "/opt/lampp/htdocs/app") {
+    // linux lampp
     define('URLROOT', "http://" . $_SERVER["SERVER_NAME"] . "/");
 
-    $cleardb_server = 'localhost:3306';
-    $cleardb_username = 'root';
-    $cleardb_password = '';
-    $cleardb_db = 'teg_local';
+    $db_server = 'localhost:3306';
+    $db_username = 'root';
+    $db_password = '';
+    $db_name = 'teg_local';
 } else if (APPROOT == "D:\\Programming\\the-epic-gamer-website\\app") {
+    // windows xampp
     define('URLROOT', "http://" . $_SERVER["SERVER_NAME"] . "/");
 
-    $cleardb_server = 'localhost:3306';
-    $cleardb_username = 'root';
-    $cleardb_password = '';
-    $cleardb_db = 'epic_gamer_local';
+    $db_server = 'localhost:3306';
+    $db_username = 'root';
+    $db_password = '';
+    $db_name = 'epic_gamer_local';
 } else {
-    define('URLROOT', 'https://the-epic-gamer.herokuapp.com/');
-
-    $cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
-    $cleardb_server = $cleardb_url["host"];
-    $cleardb_username = $cleardb_url["user"];
-    $cleardb_password = $cleardb_url["pass"];
-    $cleardb_db = substr($cleardb_url["path"], 1);
+    // in the cloud
+    die("No cloud config available");
 }
 
 // Database params
-define('DB_HOST', $cleardb_server); //Add your db host
-define('DB_USER', $cleardb_username); // Add your DB root
-define('DB_PASS', $cleardb_password); //Add your DB pass
-define('DB_NAME', $cleardb_db); //Add your DB Name
+define('DB_HOST', $db_server); //Add your db host
+define('DB_USER', $db_username); // Add your DB root
+define('DB_PASS', $db_password); //Add your DB pass
+define('DB_NAME', $db_name); //Add your DB Name
 
 //Sitename
 define('SITENAME', 'The Epic Gamer');

@@ -37,11 +37,7 @@ class ContactIndexView extends View
                 up on the fly</q>
             <h2>Where to contact us:</h2>
             <ul>
-                <li>Email: <i><a href="mailto: amatyniov@gmail.com">amatyniov@gmail.com</a></i> (yes, there is an "a" at
-                    the begining)
-                </li>
-                <li>Discord: <i>Matyniov#5840</i></li>
-                <li>Telegram: <i><a href="https://t.me/matyniov" target="_blank">click here</a></i></li>
+                <li><i>Comming soon!</i></li>
             </ul>
             <h2>Approval process</h2>
             <p>If you send us an article or anything resembling it, it will undergo a review by our top researchers and
