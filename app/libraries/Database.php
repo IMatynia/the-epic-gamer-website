@@ -21,7 +21,7 @@ class Database
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         );
         $success = False;
-        $tries = 8;
+        $tries = 80;
         while (!$success && $tries > 0) {
             try {
                 $this->dbHandler = new PDO($conn, $this->dbUser, $this->dbPass, $options);
@@ -29,7 +29,7 @@ class Database
             } catch (PDOException $e) {
                 $this->error = $e->getMessage();
                 $tries--;
-                usleep(250);
+                usleep(250000);
             }
         }
         if (!$success) {
