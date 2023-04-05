@@ -11,22 +11,42 @@ class Database
     private $dbHandler;
     private $error;
 
-    public function __construct()
+    public static ?Database $instance = null;
+
+    private function __construct()
     {
         $conn = 'mysql:host=' . $this->dbHost . ';dbname=' . $this->dbName . ";charset=utf8";
         $options = array(
             PDO::ATTR_PERSISTENT => true,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         );
-        try {
-            $this->dbHandler = new PDO($conn, $this->dbUser, $this->dbPass, $options);
-        } catch (PDOException $e) {
-            $this->error = $e->getMessage();
-            echo $this->error;
+        $success = False;
+        $tries = 8;
+        while (!$success && $tries > 0) {
+            try {
+                $this->dbHandler = new PDO($conn, $this->dbUser, $this->dbPass, $options);
+                $success = True;
+            } catch (PDOException $e) {
+                $this->error = $e->getMessage();
+                $tries--;
+                usleep(250);
+            }
+        }
+        if (!$success) {
+            die("Couldnt connect to data base, try refreshing the website!</br>" . $this->error);
         }
     }
 
-    //Allows us to write queries
+    public static function create_connection(): void
+    {
+        Database::$instance = new Database();
+    }
+
+    public static function stop_connection(): void
+    {
+        Database::$instance = null;
+    }
+
     public function query($sql)
     {
         $this->statement = $this->dbHandler->prepare($sql);
