@@ -25,7 +25,7 @@ class HeadView extends View
             <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-            <link rel="icon" type="image/x-icon" href="<?php echo URLROOT ?>/public/media/favicon.ico">
+            <link rel="icon" type="image/x-icon" href="<?php echo MEDIA . "favicon.ico" ?>">
 
             <?php
             if (isset($this->ogp_data)) {

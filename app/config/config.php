@@ -25,6 +25,8 @@ if (APPROOT == "/opt/lampp/htdocs/app") {
     die("No cloud config available");
 }
 
+const MEDIA = URLROOT . "/public/media/";
+
 // Database params
 define('DB_HOST', $db_server); //Add your db host
 define('DB_USER', $db_username); // Add your DB root
